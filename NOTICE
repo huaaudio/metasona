@@ -1,0 +1,22 @@
+MetaSona
+Copyright 2026 MetaSona contributors
+
+Original project material is licensed under Apache-2.0 (LICENSE).
+Included adaptations retain the following upstream notices and terms:
+
+MoSQITo — Eomys and the MoSQITo contributors (Apache-2.0).
+Zwicker loudness model data, roughness Bark/threshold/ear-transfer data,
+and channel weighting. See LICENSE and THIRD_PARTY.md for source locations.
+
+SQAT loudness and third-octave filtering — Copyright (c) <2015>, <Ella Manor>.
+Adapted for SQAT by Gil Felix Greco; later contributions by Sergio Aguirre.
+BSD-3-Clause; the complete notice is in LICENSES/BSD-3-Clause-SQAT.txt.
+
+SQAT Daniel–Weber roughness — copyright © 1999-2023 Dik Hermes.
+Contributors include Matt Flax, Farhan Rizwi, Gil Felix Greco and Alejandro Osses.
+MIT; the complete notice is in LICENSES/MIT-SQAT.txt.
+
+MetaSona changes: C11 APIs, per-call state, checked allocation and input
+validation, immutable Python results, explicit framing, and model-specific
+differences documented in THIRD_PARTY.md. These are adaptations, not upstream
+releases. No endorsement or standards-conformance certification is claimed.

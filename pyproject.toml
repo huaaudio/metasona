@@ -1,0 +1,121 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[build-system]
+requires = [
+  "exceptiongroup==1.3.1; python_version < '3.11'",
+  "packaging==26.2",
+  "pathspec==1.1.1",
+  "scikit-build-core==1.0.3",
+  "tomli==2.4.1; python_version < '3.11'",
+  "typing-extensions==4.16.0; python_version < '3.11'",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "metasona"
+version = "0.1.0"
+description = "Source-informed C and Python implementations of psychoacoustic metrics"
+readme = "README.md"
+license = "Apache-2.0 AND BSD-3-Clause AND MIT"
+license-files = ["LICENSE", "LICENSES/*.txt", "NOTICE", "THIRD_PARTY.md"]
+requires-python = ">=3.10,<3.14"
+authors = [
+  { name = "MetaSona contributors" },
+]
+keywords = [
+  "acoustics",
+  "loudness",
+  "psychoacoustics",
+  "roughness",
+  "sharpness",
+  "tonality",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: C",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering",
+  "Typing :: Typed",
+]
+dependencies = [
+  "numpy==2.2.6",
+  "scipy==1.15.3",
+]
+
+[project.urls]
+Repository = "https://github.com/huaaudio/metasona"
+Issues = "https://github.com/huaaudio/metasona/issues"
+Documentation = "https://github.com/huaaudio/metasona#readme"
+"Research project" = "https://www.heu-metavision.eu/"
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+build.requires = ["ninja==1.11.1.4"]
+cmake.version = "==3.31.2"
+ninja.version = ">=1.11.1,<1.12"
+cmake.build-type = "Release"
+cmake.args = [
+  "-DMS_BUILD_SHARED=ON",
+  "-DMS_WARNINGS_AS_ERRORS=ON",
+]
+install.components = ["Runtime"]
+wheel.packages = ["python/metasona"]
+wheel.py-api = "py3"
+wheel.reproducible = true
+sdist.reproducible = true
+# Build from an explicit allow-list so an active development tree cannot leak
+# caches, local environments, or verification artifacts into the sdist.
+sdist.inclusion-mode = "explicit"
+sdist.include = [
+  "CMakeLists.txt",
+  "cmake/*.in",
+  "docs/algorithm-notes.md",
+  "docs/c-api.md",
+  "docs/python-api.md",
+  "examples/CMakeLists.txt",
+  "examples/*.c",
+  "examples/*.py",
+  "include/metasona/*.h",
+  "src/*.c",
+  "src/*.h",
+  "python/metasona/*.py",
+  "python/metasona/py.typed",
+  "README.md",
+  "LICENSE",
+  "LICENSES/*.txt",
+  "NOTICE",
+  "pyproject.toml",
+  "THIRD_PARTY.md",
+]
+sdist.exclude = [
+  "tests/**",
+  "reports/**",
+  "tools/**",
+  "fuzz/**",
+  ".cache/**",
+  "cache/**",
+  "archive/**",
+  "build*/**",
+  "dist/**",
+  "stage/**",
+  "wheelhouse/**",
+  ".venv/**",
+  ".mypy_cache/**",
+  ".pytest*/**",
+  ".ruff_cache/**",
+  "**/__pycache__/**",
+  "**/*.pyc",
+  "**/*.dll",
+  "**/*.dylib",
+  "**/*.so",
+]
+build-dir = "build/{wheel_tag}"

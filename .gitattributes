@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+*.a binary
+*.dll binary
+*.dylib binary
+*.exe binary
+*.lib binary
+*.pyd binary
+*.so binary
+*.whl binary

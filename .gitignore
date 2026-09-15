@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Build products
+/install/
+/cache/
+/.cache/
+/reports/
+/tests/
+/fuzz/
+/archive/
+/upstream/
+/agent-pkg-*/
+/build*/
+dist/
+wheelhouse/
+stage/
+_skbuild/
+CMakeUserPresets.json
+
+# Native binaries
+*.dll
+*.dylib
+*.so
+*.a
+*.lib
+*.obj
+*.o
+*.pdb
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.pytest-tmp/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.venv/
+/.audit-requirements.txt
+/audit-requirements.txt
+/.uv-*-cache/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
