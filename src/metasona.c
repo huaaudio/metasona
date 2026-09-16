@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+// MetaSona authors: Jiahua Zhang and Codex, September 2026.
 
 #include "ms_internal.h"
 
@@ -121,26 +122,4 @@ int ms_checked_multiply(size_t left, size_t right, size_t *result)
     }
     *result = left * right;
     return 1;
-}
-
-double ms_hz_to_bark(double frequency_hz)
-{
-    return 13.0 * atan(0.00076 * frequency_hz)
-         + 3.5 * atan((frequency_hz / 7500.0) * (frequency_hz / 7500.0));
-}
-
-double ms_bark_to_hz(double bark)
-{
-    double low = 0.0;
-    double high = 24000.0;
-    unsigned int iteration;
-    for (iteration = 0u; iteration < 64u; ++iteration) {
-        const double middle = 0.5 * (low + high);
-        if (ms_hz_to_bark(middle) < bark) {
-            low = middle;
-        } else {
-            high = middle;
-        }
-    }
-    return 0.5 * (low + high);
 }

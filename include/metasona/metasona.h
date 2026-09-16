@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+// MetaSona authors: Jiahua Zhang and Codex, September 2026.
 
 #ifndef METASONA_METASONA_H
 #define METASONA_METASONA_H
@@ -133,7 +134,10 @@ MS_API ms_status MS_CALL ms_loudness_time(
     size_t specific_capacity,
     size_t *frame_count_written);
 
-/** Query the 200 ms / 50% overlap frame count used for roughness. */
+/**
+ * Query the 200 ms / 50% overlap frame count used for roughness.
+ * Sample counts exceeding INT_MAX or addressable memory return MS_ERROR_SIZE_OVERFLOW.
+ */
 MS_API ms_status MS_CALL ms_roughness_frame_count(
     size_t sample_count,
     uint32_t sample_rate_hz,
@@ -153,8 +157,8 @@ MS_API ms_status MS_CALL ms_roughness_dw(
     size_t *frame_count_written);
 
 /**
- * Query the 80 ms / 50% overlap frame count used for Aures tonality.
- * Unaddressable sample counts return MS_ERROR_SIZE_OVERFLOW.
+ * Query the 250 ms / 50% overlap frame count used for Aures tonality.
+ * Sample counts exceeding INT_MAX or addressable memory return MS_ERROR_SIZE_OVERFLOW.
  */
 MS_API ms_status MS_CALL ms_tonality_frame_count(
     size_t sample_count,
@@ -164,6 +168,7 @@ MS_API ms_status MS_CALL ms_tonality_frame_count(
 /**
  * Compute experimental Aures-1985-targeted tonality at 48 kHz. See the
  * documented validation limits before use.
+ * frame_count_written receives the required count on MS_ERROR_OUTPUT_TOO_SMALL.
  */
 MS_API ms_status MS_CALL ms_tonality_aures(
     const double *pressure_pa,

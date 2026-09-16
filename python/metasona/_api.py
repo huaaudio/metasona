@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# MetaSona authors: Jiahua Zhang and Codex, September 2026.
 
 """Validated public Python API backed by the versioned C ABI."""
 
@@ -212,8 +213,8 @@ def roughness_daniel_weber(
     """Compute the experimental Daniel--Weber-targeted tabulated model in asper.
 
     Frames are 200 ms with 50 percent overlap. Timestamps are frame centres,
-    starting at 100 ms. Model tables follow the supplied legacy C reference,
-    with corrected frequency-bin coordinates. Standards validation is pending.
+    starting at 100 ms. Uses the SQAT-aligned psychohelperc kernel and
+    all complete frames. Standards validation is pending.
     """
     signal, duration_s = _prepare_signal(pressure_pa, sample_rate_hz)
     skip_s = time_skip(time_skip_s, duration_s)
@@ -255,9 +256,9 @@ def tonality_aures(
 ) -> TonalityResult:
     """Compute experimental Aures-1985-targeted tonality.
 
-    Frames are 80 ms with 50 percent overlap. Timestamps are frame centres,
-    starting at 40 ms. Public validation shows material under-detection for
-    some tone-emergence cases.
+    Frames are 250 ms with 50 percent overlap. Timestamps are frame centres,
+    starting at 125 ms. Uses the SQAT-aligned psychohelperc kernel and
+    all complete frames.
     """
     signal, duration_s = _prepare_signal(pressure_pa, sample_rate_hz)
     skip_s = time_skip(time_skip_s, duration_s)
@@ -287,7 +288,7 @@ def tonality_aures(
             -1,
             f"frame-count contract violation: queried {frame_count}, wrote {written.value}",
         )
-    centres = 0.04 + np.arange(frame_count, dtype=np.float64) * 0.04
+    centres = 0.125 + np.arange(frame_count, dtype=np.float64) * 0.125
     selected = _frame_selection_mask(centres, skip_s)
     return TonalityResult(centres[selected], values[selected])
 

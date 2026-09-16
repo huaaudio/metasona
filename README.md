@@ -1,6 +1,11 @@
 # MetaSona
 
-Psychoacoustic metrics in C11, with a typed Python interface.
+Psychoacoustic metrics in C, with a typed Python interface.
+
+MetaSona packages compiled C implementations in a Python wheel to reduce
+computation time for repeated psychoacoustic analysis, while keeping a simple
+NumPy interface. The speed comes from the native implementation; the wheel
+makes that implementation easy to install.
 
 | Function | Calculates | Unit |
 |---|---|---|
@@ -11,8 +16,29 @@ Psychoacoustic metrics in C11, with a typed Python interface.
 | `tonality_aures` | Aures tonality | dimensionless |
 | `sharpness_din45692` | Sharpness from specific loudness | acum |
 
-Version 0.1.0 is experimental, particularly roughness and tonality. Standards
+The current version is experimental, particularly roughness and tonality. Standards
 conformance has not been established.
+
+Roughness and tonality follow [SQAT revision e6228b789fc9](https://github.com/ggrecow/SQAT/tree/e6228b789fc9a22251314f95678b9b1e08e60c55/psychoacoustic_metrics).
+Tonality uses 250 ms windows and 125 ms hops. MetaSona returns every complete
+frame with centre timestamps; see [implementation credits and differences](THIRD_PARTY.md).
+
+## Computation time
+
+Measured September 2026 with the SQAT-aligned MetaSona wheel. Median of five
+warmed calls for 10 s of 48 kHz audio (1 kHz carrier, 70 Hz AM plus noise,
+60 dB SPL), Ryzen 9 5950X, Windows. MetaSona: MSVC Release; MoSQITo: 1.2.1;
+imports and audio I/O are excluded.
+
+| Metric | MetaSona | MoSQITo | Speedup vs MoSQITo |
+|---|---:|---:|---:|
+| Stationary loudness | 0.090 s | 0.220 s | 2.4× |
+| Time-varying loudness | 0.233 s | 17.092 s | 73.5× |
+| Roughness | 1.448 s | 22.754 s | 15.7× |
+| Aures tonality | 0.572 s | Not available | — |
+
+These are workload timings; models and outputs differ. Native filtering and channel processing contribute to
+speed alongside FFTs; compiler and framing differences also affect timings.
 
 ## Python
 
@@ -61,14 +87,13 @@ Include `<metasona/metasona.h>` and link the installed CMake target
 `MetaSona::metasona`. Native signal functions require 48 kHz input.
 Use `-DMS_BUILD_SHARED=OFF` for a static library.
 
-See the [C API](https://github.com/huaaudio/metasona/blob/main/docs/c-api.md),
-[C example](https://github.com/huaaudio/metasona/blob/main/examples/metasona_example.c),
-and [model conventions](https://github.com/huaaudio/metasona/blob/main/docs/algorithm-notes.md).
+See the [C API](https://github.com/huaaudio/metasona/blob/main/docs/c-api.md)
+and [C example](https://github.com/huaaudio/metasona/blob/main/examples/metasona_example.c).
 
 ## License and credits
 
-[Apache-2.0](https://github.com/huaaudio/metasona/blob/main/LICENSE), with BSD-3-Clause
-and MIT components from MoSQITo and SQAT. See
+[GPL-3.0](https://github.com/huaaudio/metasona/blob/main/LICENSE) for the combined
+distribution, with retained Apache-2.0, BSD-3-Clause and MIT component notices. See
 [third-party credits](https://github.com/huaaudio/metasona/blob/main/THIRD_PARTY.md).
 
 ## Acknowledgements

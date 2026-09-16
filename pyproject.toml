@@ -16,11 +16,11 @@ name = "metasona"
 version = "0.1.0"
 description = "Source-informed C and Python implementations of psychoacoustic metrics"
 readme = "README.md"
-license = "Apache-2.0 AND BSD-3-Clause AND MIT"
+license = "GPL-3.0-only AND Apache-2.0 AND BSD-3-Clause AND MIT"
 license-files = ["LICENSE", "LICENSES/*.txt", "NOTICE", "THIRD_PARTY.md"]
 requires-python = ">=3.10,<3.14"
 authors = [
-  { name = "MetaSona contributors" },
+  { name = "Jiahua Zhang and Codex" },
 ]
 keywords = [
   "acoustics",
@@ -78,7 +78,6 @@ sdist.inclusion-mode = "explicit"
 sdist.include = [
   "CMakeLists.txt",
   "cmake/*.in",
-  "docs/algorithm-notes.md",
   "docs/c-api.md",
   "docs/python-api.md",
   "examples/CMakeLists.txt",
@@ -87,6 +86,9 @@ sdist.include = [
   "include/metasona/*.h",
   "src/*.c",
   "src/*.h",
+  "src/third_party/pocketfft/*.c",
+  "src/third_party/pocketfft/*.h",
+  "src/third_party/pocketfft/*.md",
   "python/metasona/*.py",
   "python/metasona/py.typed",
   "README.md",

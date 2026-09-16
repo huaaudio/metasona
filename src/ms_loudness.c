@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0 AND BSD-3-Clause
+// MetaSona adaptation: Jiahua Zhang and Codex, September 2026.
 // Adapted loudness processing; SQAT: Copyright (c) <2015>, <Ella Manor>.
 // Modified for the MetaSona C API; see NOTICE and THIRD_PARTY.md.
 
@@ -55,6 +56,8 @@ static const double MS_SLOPE_RANGES[18] = {
     1.36, 0.82, 0.42, 0.30, 0.22, 0.15, 0.10, 0.035, 0.0
 };
 
+/* Row 12, column 4 is 0.22 in supplied ISO_532-1.c (not MoSQITo's 0.24).
+ * Retained from that source, not adjusted to make a fixture pass. */
 static const double MS_UPPER_SLOPES[18][8] = {
     {13.0, 8.2, 6.3, 5.5, 5.5, 5.5, 5.5, 5.5},
     {9.0, 7.5, 6.0, 5.1, 4.5, 4.5, 4.5, 4.5},
@@ -248,6 +251,9 @@ ms_status ms_loudness_from_levels(
         }
     }
     ms_core_loudness(levels_db, field, core);
+    for (index = 0u; index < 21u; ++index) {
+        if (!ms_is_finite(core[index])) return MS_ERROR_NUMERICAL;
+    }
     result = ms_specific_loudness(core, temporary);
     if (!ms_is_finite(result)) {
         return MS_ERROR_NUMERICAL;
@@ -297,6 +303,13 @@ ms_status ms_levels_from_signal_48k(
     size_t count,
     double levels_db[MS_THIRD_OCTAVE_BANDS])
 {
+    return ms_levels_from_signal_skip_48k(samples, count, 0u, levels_db);
+}
+
+ms_status ms_levels_from_signal_skip_48k(
+    const double *samples, size_t count, size_t skip,
+    double levels_db[MS_THIRD_OCTAVE_BANDS])
+{
     double result[MS_THIRD_OCTAVE_BANDS];
     size_t band;
     if (samples == NULL || levels_db == NULL) {
@@ -305,18 +318,23 @@ ms_status ms_levels_from_signal_48k(
     if (count < 256u) {
         return MS_ERROR_INPUT_TOO_SHORT;
     }
+    if (skip >= count) {
+        return MS_ERROR_INVALID_ARGUMENT;
+    }
     for (band = 0u; band < MS_THIRD_OCTAVE_BANDS; ++band) {
         ms_filter_state state = {{{0.0}}};
         double energy = 0.0;
         size_t sample;
         for (sample = 0u; sample < count; ++sample) {
             const double filtered = ms_filter_sample(&state, band, samples[sample]);
-            energy += filtered * filtered;
+            if (sample >= skip) {
+                energy += filtered * filtered;
+            }
             if (!ms_is_finite(energy)) {
                 return MS_ERROR_NUMERICAL;
             }
         }
-        result[band] = ms_energy_level(energy / (double)count);
+        result[band] = ms_energy_level(energy / (double)(count - skip));
     }
     memcpy(levels_db, result, sizeof(result));
     return MS_OK;

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0 AND BSD-3-Clause
+// MetaSona adaptation: Jiahua Zhang and Codex, September 2026.
 // Model coefficients verified against MoSQITo and SQAT; see THIRD_PARTY.md.
 // MoSQITo contributors; SQAT filtering: Copyright (c) <2015>, <Ella Manor>.
 // Modified: const C tables with per-section gains; see NOTICE and LICENSES/.

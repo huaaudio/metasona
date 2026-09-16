@@ -1,4 +1,5 @@
 /* SPDX-FileCopyrightText: 2026 MetaSona contributors */
+// MetaSona authors: Jiahua Zhang and Codex, September 2026.
 /* SPDX-License-Identifier: Apache-2.0 */
 
 #include <metasona/metasona.h>

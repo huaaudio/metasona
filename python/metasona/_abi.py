@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# MetaSona authors: Jiahua Zhang and Codex, September 2026.
 
 """Lazy, ABI-checked loading and declaration of the native C interface."""
 

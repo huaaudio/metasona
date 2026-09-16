@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# MetaSona authors: Jiahua Zhang and Codex, September 2026.
 
 """Public enums and immutable result containers."""
 

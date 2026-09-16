@@ -139,8 +139,9 @@ Both output arrays are required. Specific output is frame-major and needs
 `frame_count * 240` doubles. `frame_count_written` is required and receives the
 required count on success or `MS_ERROR_OUTPUT_TOO_SMALL`, and zero on other
 errors. Neither output array is changed on a failed calculation. Check multiplication before
-allocating in caller code as well. The C result has no timestamps; see
-[`algorithm-notes.md`](algorithm-notes.md) for its causal semantics.
+allocating in caller code as well. The C result has no timestamps. Outputs sample the causal trajectory at input
+indices 0, 96, 192, …; Python labels them at nominal centres 1, 3, 5, … ms.
+These labels do not imply symmetric analysis windows.
 
 ## Roughness
 
@@ -167,7 +168,7 @@ equals the query result and output has that many asper values. On
 leave it unchanged. Failed calculations do not change the result buffer.
 
 This ABI entry point uses the supplied reference's tabulated Daniel–Weber
-model with corrected DFT coordinates. It remains experimental and must not
+model and spectral conventions. It remains experimental and must not
 be presented as a normatively validated implementation of the full model.
 
 ## Tonality
@@ -189,14 +190,17 @@ ms_status ms_tonality_aures(
 ```
 
 The complete-frame count is
-`1 + floor((sample_count - 3840) / 1920)`; shorter input is rejected. On
-success, the output is a nonnegative dimensionless value per frame. Query
-before allocating and do not rely on `frame_count_written` after an error.
-The result is not bounded above by one; multitone frames can exceed one.
-This entry point is experimental; public validation identifies material
-differences at some nominal fixture prominence settings. Detection and energy
-removal use one consistent ±3-bin tonal group, and intrinsic width is corrected
-for the Hann window's full half-power width.
+`1 + floor((sample_count - 12000) / 6000)`; shorter input is rejected.
+Output is nonnegative and may exceed one. On insufficient capacity,
+`frame_count_written` receives the required count; other failures leave it
+unchanged. Failed calculations do not change the result buffer.
+
+Both roughness and tonality adapt the supplied psychohelperc kernels to
+SQAT revision `e6228b789fc9`. Their
+native sample counts must fit in `int` as well as an addressable double array;
+larger counts return `MS_ERROR_SIZE_OVERFLOW`. The public function signatures
+are unchanged. Tonality now uses a 250 ms window and 125 ms hop;
+call the frame-count query when allocating outputs.
 
 ## Sharpness
 

@@ -1,20 +1,34 @@
 MetaSona
 Copyright 2026 MetaSona contributors
+MetaSona authors: Jiahua Zhang and Codex, September 2026.
 
-Original project material is licensed under Apache-2.0 (LICENSE).
+The combined distribution is licensed under GPL-3.0 (LICENSE).
+Original project material retains Apache-2.0 (LICENSES/Apache-2.0.txt).
 Included adaptations retain the following upstream notices and terms:
+
+PocketFFT — Copyright (C) 2010-2019 Max-Planck-Society; Martin Reinecke.
+BSD-3-Clause; the complete notice is in LICENSES/BSD-3-Clause-PocketFFT.txt.
+Pinned upstream C backend, integrated with call-local FFT plan reuse.
 
 MoSQITo — Eomys and the MoSQITo contributors (Apache-2.0).
 Zwicker loudness model data, roughness Bark/threshold/ear-transfer data,
-and channel weighting. See LICENSE and THIRD_PARTY.md for source locations.
+and channel weighting. See LICENSES/Apache-2.0.txt and THIRD_PARTY.md.
 
 SQAT loudness and third-octave filtering — Copyright (c) <2015>, <Ella Manor>.
 Adapted for SQAT by Gil Felix Greco; later contributions by Sergio Aguirre.
 BSD-3-Clause; the complete notice is in LICENSES/BSD-3-Clause-SQAT.txt.
 
 SQAT Daniel–Weber roughness — copyright © 1999-2023 Dik Hermes.
-Contributors include Matt Flax, Farhan Rizwi, Gil Felix Greco and Alejandro Osses.
+Contributors include Matt Flax, Farhan Rizwi, Gil Felix Greco, Alejandro Osses
+and Sergio Aguirre. Includes the MIT-licensed shared Terhardt filterbank.
 MIT; the complete notice is in LICENSES/MIT-SQAT.txt.
+
+PA/SQAT Aures tonality — Gil Felix Greco, 2020-2026; Sergio Aguirre, 2026.
+The reused author-supplied psychohelperc tonality kernel derives from
+Tonality_Aures1985.m and retains deterministic phase and per-tone masking.
+The older PA adaptation retains BSD-3-Clause; see LICENSES/BSD-3-Clause-PA-Tonality.txt.
+The current SQAT tonality port, including narrowband detection, is GPL-3.0;
+see LICENSE. SQAT revision: e6228b789fc9a22251314f95678b9b1e08e60c55.
 
 MetaSona changes: C11 APIs, per-call state, checked allocation and input
 validation, immutable Python results, explicit framing, and model-specific

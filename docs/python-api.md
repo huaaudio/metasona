@@ -73,8 +73,7 @@ roughness_daniel_weber(
 
 Returns complete 200 ms frames with 100 ms hop, labelled 0.1, 0.2, … seconds.
 This function is experimental. It uses the supplied reference's tabulated
-model with corrected frequency-bin coordinates; normative validation remains
-open.
+model and spectral conventions; normative validation remains open.
 
 ```python
 tonality_aures(
@@ -86,12 +85,11 @@ tonality_aures(
 ) -> TonalityResult
 ```
 
-Returns complete 80 ms frames with 40 ms hop, labelled 0.04, 0.08, … seconds.
-This function is experimental; public tone-plus-noise validation identifies
-remaining differences around the nominal 20–30 dB fixture prominence settings.
-Its seven-line detector and Hann-width correction reduce the former
-five/seven-line inconsistency and fractional-bin bias. Values are nonnegative
-but not capped at one; a multitone frame can exceed one.
+Returns complete 250 ms frames with 125 ms hop, labelled 0.125, 0.250, … seconds.
+The minimum input duration is 250 ms after resampling. Values are nonnegative
+and may exceed one for multitone signals. Both metrics adapt the supplied
+psychohelperc kernels to SQAT revision `e6228b789fc9`, and include the final
+complete frame. See [implementation differences](../THIRD_PARTY.md).
 
 ```python
 sharpness_din45692(specific_loudness_sone_per_bark) -> SharpnessResult
