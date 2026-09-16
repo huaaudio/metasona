@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// MetaSona authors: Jiahua Zhang and Codex, September 2026.
+// MetaSona author: Jiahua Zhang, September 2026.
 #include "ms_internal.h"
 #include <math.h>
 

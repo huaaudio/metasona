@@ -29,10 +29,20 @@ def main() -> None:
     varying = ms.time_varying_loudness(pressure, sample_rate)
     roughness = ms.roughness_daniel_weber(pressure, sample_rate)
     tonality = ms.tonality_aures(pressure, sample_rate)
+    ecma = ms.ecma_tonal_analysis(pressure, sample_rate)
+    ecma_roughness = ms.roughness_ecma(pressure, sample_rate)
+    assert 0.97 < ecma_roughness.roughness_90_asper < 1.03
+    tone = np.sqrt(2) * .002 * np.sin(2 * np.pi * 1000 * time)
+    calibration = ms.ecma_tonal_analysis(tone, sample_rate)
+    assert abs(calibration.loudness.mean_loudness_sone - 1) < .01
+    assert abs(calibration.tonality.mean_tonality_tu - 1) < .01
     for timestamps, values in (
         (varying.time_s, varying.loudness_sone),
         (roughness.time_s, roughness.roughness_asper),
         (tonality.time_s, tonality.tonality),
+        (ecma.loudness.time_s, ecma.loudness.loudness_sone),
+        (ecma.tonality.time_s, ecma.tonality.tonality_tu),
+        (ecma_roughness.time_s, ecma_roughness.roughness_asper),
     ):
         assert values.size > 0 and values.shape == timestamps.shape
         assert np.all(np.isfinite(values)) and np.all(values >= 0)

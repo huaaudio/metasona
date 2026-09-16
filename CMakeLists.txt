@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.21)
 
 project(
   metasona
-  VERSION 0.1.1
+  VERSION 0.2.0
   DESCRIPTION "Source-informed psychoacoustic metrics library"
   LANGUAGES C
 )
@@ -49,6 +49,9 @@ add_library(metasona ${MS_LIBRARY_TYPE}
   src/ms_loudness.c
   src/ms_signal_metrics.c
   src/ms_sharpness.c
+  src/ms_ecma.c
+  src/ms_ecma_tonal.c
+  src/ms_ecma_rough.c
   $<TARGET_OBJECTS:ms_pocketfft>
   $<TARGET_OBJECTS:ms_psychoacoustics>
 )

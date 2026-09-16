@@ -1,10 +1,19 @@
 MetaSona
 Copyright 2026 MetaSona contributors
-MetaSona authors: Jiahua Zhang and Codex, September 2026.
+MetaSona author: Jiahua Zhang, September 2026.
+Developed with assistance from OpenAI Codex.
 
 The combined distribution is licensed under GPL-3.0 (LICENSE).
 Original project material retains Apache-2.0 (LICENSES/Apache-2.0.txt).
 Included adaptations retain the following upstream notices and terms:
+
+ECMA Sottek Hearing Model loudness, roughness, tonality and shared primitives:
+adapted from SQAT/RefMap code by
+Mike JB Lotinga and Matt Torjussen, University of Salford, RefMap project
+(www.refmap.eu), GPL-3.0; see LICENSE. SQAT revision
+e6228b789fc9a22251314f95678b9b1e08e60c55. MoSQITo 2022 comparison coefficients
+and algorithm by Eomys/contributors, Apache-2.0, revision
+d990c33f94f1b2050b2d811dea492219ebe97b30. See LICENSES/Apache-2.0.txt.
 
 PocketFFT — Copyright (C) 2010-2019 Max-Planck-Society; Martin Reinecke.
 BSD-3-Clause; the complete notice is in LICENSES/BSD-3-Clause-PocketFFT.txt.

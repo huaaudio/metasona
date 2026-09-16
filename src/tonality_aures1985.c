@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only AND Apache-2.0 AND BSD-3-Clause
 // Based on the supplied C port; aligned to SQAT e6228b789fc9.
-// MetaSona adaptation: Jiahua Zhang and Codex, September 2026.
+// MetaSona adaptation: Jiahua Zhang, September 2026.
 // Changes: MetaSona loudness, complete frames, checked FFT/numeric errors.
 // Provenance and notices: THIRD_PARTY.md, LICENSES/BSD-3-Clause-PA-Tonality.txt.
 

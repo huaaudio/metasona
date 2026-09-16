@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0 AND MIT
-// MetaSona adaptation: Jiahua Zhang and Codex, September 2026.
+// MetaSona adaptation: Jiahua Zhang, September 2026.
 /************************************************************************/
 /*  Roughness calculation according to Daniel & Weber (1997)            */
 /*  "Psychoacoustical roughness: implementation of an optimized model"  */

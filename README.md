@@ -15,12 +15,15 @@ makes that implementation easy to install.
 | `roughness_daniel_weber` | Daniel–Weber roughness | asper |
 | `tonality_aures` | Aures tonality | dimensionless |
 | `sharpness_din45692` | Sharpness from specific loudness | acum |
+| `loudness_ecma` | ECMA-418-2:2025 loudness, including tonal/noise separation | sone_HMS |
+| `roughness_ecma` | ECMA-418-2:2025 roughness | asper_HMS |
+| `tonality_ecma` | ECMA-418-2:2025 psychoacoustic tonality | tu_HMS |
 
 The current version is experimental, particularly roughness and tonality. Standards
 conformance has not been established.
 
-Roughness and tonality follow [SQAT revision e6228b789fc9](https://github.com/ggrecow/SQAT/tree/e6228b789fc9a22251314f95678b9b1e08e60c55/psychoacoustic_metrics).
-Tonality uses 250 ms windows and 125 ms hops. MetaSona returns every complete
+The metrics draw on [SQAT revision e6228b789fc9](https://github.com/ggrecow/SQAT/tree/e6228b789fc9a22251314f95678b9b1e08e60c55/psychoacoustic_metrics).
+Aures tonality uses 250 ms windows and 125 ms hops. MetaSona returns every complete
 frame with centre timestamps; see [implementation credits and differences](THIRD_PARTY.md).
 
 ## Computation time
@@ -61,9 +64,20 @@ Intel/Apple silicon, so these installations do not require a C compiler.
 To install from a source checkout instead, use `python -m pip install .` or
 `uv add /path/to/metasona`. Building from source requires a C11 compiler.
 
-Pass **calibrated mono pressure in pascals**, not uncalibrated audio samples.
+Pass **calibrated pressure in pascals**, not uncalibrated audio samples.
+The ECMA functions accept mono `(samples,)` or stereo `(samples, 2)` arrays;
+the other functions accept mono arrays.
 Python accepts integer sample rates from 8 to 192 kHz and resamples to 48 kHz
 when needed. Results include their units and read-only NumPy arrays.
+
+For ECMA loudness and tonality together, use
+`result = ms.ecma_tonal_analysis(pressure_pa, fs)` and read `result.loudness`
+and `result.tonality`. Loudness/tonality require at least 304 ms of audio;
+roughness requires 320 ms. Representative values exclude the initial filter
+transient. ECMA loudness implements Section 8, whereas MoSQITo's
+`loudness_ecma` implements the Section 5 basis calculation. ECMA roughness
+does not apply the optional entropy weighting. Function and result-class
+docstrings describe output shapes, units, timing and binaural combination.
 
 ```python
 import numpy as np
@@ -108,6 +122,8 @@ distribution, with retained Apache-2.0, BSD-3-Clause and MIT component notices. 
 [third-party credits](https://github.com/huaaudio/metasona/blob/main/THIRD_PARTY.md).
 
 ## Acknowledgements
+
+Developed by Jiahua Zhang with assistance from OpenAI Codex.
 
 Developed during PhD research within the [METAVISION](https://www.heu-metavision.eu/)
 MSCA Doctoral Network.

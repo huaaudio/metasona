@@ -42,6 +42,27 @@ dependency.
 
 ## SQAT
 
+The ECMA-418-2:2025 kernels (`src/ms_ecma*.c`) adapt the SQAT/RefMap
+implementations of loudness, roughness, tonality and shared hearing-model
+utilities by Mike JB Lotinga and Matt Torjussen, University of Salford,
+RefMap project. These adaptations retain GPL-3.0. They use call-local
+buffers, portable C FFTs and checked C/Python interfaces. MoSQITo's
+Apache-2.0 Section 5 implementation also informed the shared primitives.
+Detailed validation and reference comparisons are maintained outside the
+package repository in the development workspace.
+
+The roughness port uses the standard's exact 20 ms grid and nominal
+calibration factor 0.0180685; SQAT uses a grid ending at the signal duration
+and a slightly adjusted calibration. Equal-prominence peaks are selected
+deterministically by lower frequency. The optional entropy weighting is
+not applied. Tonal frequency is selected from the positive-frequency half
+of the real autocorrelation spectrum; this resolves conjugate peak ties.
+The loudness combination uses a scaled power sum to avoid underflow near
+silence. The autocorrelation explicitly zeros overlaps with zero energy
+and enforces the mathematical [0,1] bound after rectification, preventing
+FFT roundoff from creating false components during startup. These are
+numerical/implementation differences, not new models.
+
 The following files in [SQAT](https://github.com/ggrecow/SQAT/blob/e6228b789fc9a22251314f95678b9b1e08e60c55/README.md), revision
 `e6228b789fc9a22251314f95678b9b1e08e60c55`, carry explicit file-level licenses:
 

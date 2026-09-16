@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0 AND BSD-3-Clause
-// MetaSona adaptation: Jiahua Zhang and Codex, September 2026.
+// MetaSona adaptation: Jiahua Zhang, September 2026.
 /************************************************************************/
 /*  Tonality calculation according to Aures (1985)                      */
 /*                                                                      */

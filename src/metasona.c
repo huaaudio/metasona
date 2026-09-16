@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// MetaSona authors: Jiahua Zhang and Codex, September 2026.
+// MetaSona author: Jiahua Zhang, September 2026.
 
 #include "ms_internal.h"
 
@@ -48,7 +48,7 @@ uint32_t ms_abi_version(void)
 
 const char *ms_version_string(void)
 {
-    return "0.1.1";
+    return "0.2.0";
 }
 
 const char *ms_status_string(ms_status status)

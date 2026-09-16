@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# MetaSona authors: Jiahua Zhang and Codex, September 2026.
+# MetaSona author: Jiahua Zhang, September 2026.
 
 """Psychoacoustic metrics with a stable native C core.
 
@@ -26,6 +26,8 @@ from ._types import (
     TimeVaryingLoudnessResult,
     TonalityResult,
 )
+from ._ecma import ecma_tonal_analysis, loudness_ecma, roughness_ecma, tonality_ecma
+from ._ecma_types import EcmaLoudnessResult, EcmaRoughnessResult, EcmaTonalAnalysis, EcmaTonalityResult
 from .exceptions import (
     MetaSonaError,
     MetaSonaValidationError,
@@ -34,6 +36,14 @@ from .exceptions import (
 )
 
 __all__ = [
+    "EcmaLoudnessResult",
+    "EcmaRoughnessResult",
+    "EcmaTonalAnalysis",
+    "EcmaTonalityResult",
+    "ecma_tonal_analysis",
+    "loudness_ecma",
+    "roughness_ecma",
+    "tonality_ecma",
     "LoudnessResult",
     "MetaSonaError",
     "MetaSonaValidationError",
@@ -55,4 +65,4 @@ __all__ = [
     "tonality_aures",
 ]
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"

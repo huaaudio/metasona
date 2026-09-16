@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Derived from SQAT: Sergio Aguirre and Gil Felix Greco, September 2026.
-// MetaSona adaptation: Jiahua Zhang and Codex, September 2026.
+// MetaSona adaptation: Jiahua Zhang, September 2026.
 // Port of il_find_narrowband in SQAT Tonality_Aures1985.m, revision
 // e6228b789fc9a22251314f95678b9b1e08e60c55. See THIRD_PARTY.md and LICENSES/.
 #ifndef METASONA_TONALITY_NARROWBAND_H

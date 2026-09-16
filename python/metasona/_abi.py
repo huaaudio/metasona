@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# MetaSona authors: Jiahua Zhang and Codex, September 2026.
+# MetaSona author: Jiahua Zhang, September 2026.
 
 """Lazy, ABI-checked loading and declaration of the native C interface."""
 
@@ -23,7 +23,7 @@ from numpy.typing import NDArray
 from .exceptions import NativeLibraryError
 
 EXPECTED_ABI_VERSION = 1
-EXPECTED_NATIVE_VERSION = "0.1.1"
+EXPECTED_NATIVE_VERSION = "0.2.0"
 _ENVIRONMENT_VARIABLE = "METASONA_LIBRARY"
 _SYSTEM_FALLBACK_ENVIRONMENT_VARIABLE = "METASONA_ALLOW_SYSTEM_LIBRARY"
 
@@ -166,13 +166,24 @@ def _configure_signatures(library: ctypes.CDLL) -> None:
     ]
     library.ms_sharpness_din.restype = ctypes.c_int32
 
+    for name in ("ms_ecma_tonal_frame_count", "ms_ecma_roughness_frame_count"):
+        function = getattr(library, name)
+        function.argtypes = [ctypes.c_size_t, ctypes.c_uint32, ctypes.POINTER(ctypes.c_size_t)]
+        function.restype = ctypes.c_int32
+    for name in ("ms_ecma_tonal_analysis", "ms_roughness_ecma"):
+        function = getattr(library, name)
+        function.argtypes = [DoublePointer, ctypes.c_size_t, ctypes.c_uint32,
+                             ctypes.c_uint32, DoublePointer, ctypes.c_size_t,
+                             ctypes.POINTER(ctypes.c_size_t)]
+        function.restype = ctypes.c_int32
+
 
 def _library_filenames() -> tuple[str, ...]:
     if sys.platform == "win32":
         return ("metasona.dll", "libmetasona.dll")
     if sys.platform == "darwin":
         return ("libmetasona.dylib", "metasona.dylib")
-    return ("libmetasona.so", "libmetasona.so.0", "libmetasona.so.0.1.1")
+    return ("libmetasona.so", "libmetasona.so.1", "libmetasona.so.0.2.0")
 
 
 def _package_candidates() -> list[Any]:

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// MetaSona authors: Jiahua Zhang and Codex, September 2026.
+// MetaSona author: Jiahua Zhang, September 2026.
 
 #ifndef METASONA_METASONA_H
 #define METASONA_METASONA_H
@@ -32,6 +32,16 @@ extern "C" {
 #define MS_SAMPLE_RATE_HZ 48000u
 #define MS_THIRD_OCTAVE_BANDS 28u
 #define MS_BARK_BANDS 240u
+#define MS_ECMA_BARK_BANDS 53u
+#define MS_ECMA_TONAL_PLANES 5u
+
+enum ms_ecma_tonal_plane {
+    MS_ECMA_TONAL_LOUDNESS = 0,
+    MS_ECMA_NOISE_LOUDNESS = 1,
+    MS_ECMA_TONAL_FREQUENCY = 2,
+    MS_ECMA_SPECIFIC_TONALITY = 3,
+    MS_ECMA_SPECIFIC_LOUDNESS = 4
+};
 
 typedef int32_t ms_status;
 enum ms_status_value {
@@ -187,6 +197,51 @@ MS_API ms_status MS_CALL ms_sharpness_din(
     const double *specific_sone_per_bark,
     size_t specific_count,
     double *sharpness_acum);
+
+/**
+ * Query the ECMA-418-2:2025 tonal analysis frame count. Native input is
+ * exactly 48 kHz, mono, at least 304 ms. Output times are i * 256 / 48000 s,
+ * i = 0 through ceil(sample_count / 256), inclusive.
+ */
+MS_API ms_status MS_CALL ms_ecma_tonal_frame_count(
+    size_t sample_count, uint32_t sample_rate_hz, size_t *frame_count);
+
+/**
+ * Compute ECMA-418-2:2025 Sections 6 and 8 jointly from pressure in pascals.
+ * Output has five planes, each containing frame_count * MS_ECMA_BARK_BANDS
+ * doubles in frame-major order. Plane order is ms_ecma_tonal_plane above.
+ * Bands are 0.5, 1.0, ... 26.5 Bark_HMS; frequencies are
+ * (81.9289 / 0.1618) * sinh(0.1618 * Bark_HMS), in Hz.
+ * Loudness planes use sone_HMS/Bark_HMS, frequency uses Hz, and specific
+ * tonality uses tu_HMS. Total loudness is 0.5 * sum of plane 4 across bands;
+ * total tonality is the band maximum of plane 3. Discard frames 0..56 when
+ * computing representative values. Tonality averages only values > 0.02;
+ * loudness uses the power mean with exponent 1/log10(2).
+ * frame_count_written receives the required count on OUTPUT_TOO_SMALL.
+ */
+MS_API ms_status MS_CALL ms_ecma_tonal_analysis(
+    const double *pressure_pa, size_t sample_count, uint32_t sample_rate_hz,
+    ms_sound_field field, double *planes, size_t capacity,
+    size_t *frame_count_written);
+
+/** Query ECMA roughness frames: floor(sample_count / 960) + 1, at 48 kHz.
+ * Input must contain at least 320 ms. Output times are i / 50 seconds. */
+MS_API ms_status MS_CALL ms_ecma_roughness_frame_count(
+    size_t sample_count, uint32_t sample_rate_hz, size_t *frame_count);
+
+/**
+ * Compute ECMA-418-2:2025 Section 7 specific roughness, without optional
+ * entropy weighting (7.1.6), from mono pressure samples in pascals at 48 kHz.
+ * Output is frame-major, frame_count * 53 doubles, in asper_HMS/Bark_HMS.
+ * Total roughness is 0.5 * the band sum. Representative roughness is the
+ * 90th percentile after discarding frames 0..15 (320 ms). Use the same
+ * Bark_HMS grid as tonal analysis. frame_count_written receives the required
+ * count on OUTPUT_TOO_SMALL. All input/output ranges must be disjoint.
+ */
+MS_API ms_status MS_CALL ms_roughness_ecma(
+    const double *pressure_pa, size_t sample_count, uint32_t sample_rate_hz,
+    ms_sound_field field, double *specific_asper_per_bark, size_t capacity,
+    size_t *frame_count_written);
 
 #ifdef __cplusplus
 }

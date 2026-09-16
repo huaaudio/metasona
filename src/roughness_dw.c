@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0 AND MIT
-// MetaSona adaptation: Jiahua Zhang and Codex, September 2026.
+// MetaSona adaptation: Jiahua Zhang, September 2026.
 // Based on the user-supplied C port; aligned to SQAT e6228b789fc9.
 // Model sources: Roughness_Daniel1997, Get_Hweight_roughness,
 // Get_gzi_roughness, Terhardt_filterbank and Terhardt_filterbank_params.
