@@ -42,13 +42,24 @@ speed alongside FFTs; compiler and framing differences also affect timings.
 
 ## Python
 
-Requires Python 3.10–3.13 and a C11 compiler. From this checkout:
+MetaSona requires Python 3.10–3.14. Install the published package from PyPI
+with pip:
 
 ```sh
-python -m pip install .
+python -m pip install metasona
 ```
 
-Or add the checkout to a uv project with `uv add /path/to/metasona`.
+Or add it to a uv project:
+
+```sh
+uv add metasona
+```
+
+Prebuilt wheels are published for Windows x64, Linux x64/ARM64, and macOS
+Intel/Apple silicon, so these installations do not require a C compiler.
+
+To install from a source checkout instead, use `python -m pip install .` or
+`uv add /path/to/metasona`. Building from source requires a C11 compiler.
 
 Pass **calibrated mono pressure in pascals**, not uncalibrated audio samples.
 Python accepts integer sample rates from 8 to 192 kHz and resamples to 48 kHz

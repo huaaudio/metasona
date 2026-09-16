@@ -136,7 +136,7 @@ skip does not reset their state.
 Platform wheels place the shared library in `metasona/_native`. Developers
 can override discovery with `METASONA_LIBRARY` set to an exact compatible
 library file. The loader verifies both `ms_abi_version() == 1` and an exact
-`ms_version_string() == "0.1.0"` match with this Python package.
+`ms_version_string() == "0.1.1"` match with this Python package.
 
 The loader fails closed when a bundled or explicitly selected library cannot
 be loaded. It does not silently substitute a same-named system library. A

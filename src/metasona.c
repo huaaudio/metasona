@@ -48,7 +48,7 @@ uint32_t ms_abi_version(void)
 
 const char *ms_version_string(void)
 {
-    return "0.1.0";
+    return "0.1.1";
 }
 
 const char *ms_status_string(ms_status status)

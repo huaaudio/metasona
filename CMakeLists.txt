@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.21)
 
 project(
   metasona
-  VERSION 0.1.0
+  VERSION 0.1.1
   DESCRIPTION "Source-informed psychoacoustic metrics library"
   LANGUAGES C
 )
