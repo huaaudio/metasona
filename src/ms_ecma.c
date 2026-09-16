@@ -50,14 +50,14 @@ double ms_ecma_basis(double rms_pa, size_t band, unsigned edition)
     static const double v[9] = {1.0,.6602,.0864,.6384,.0328,.4068,.2082,.3994,.6434};
     double value = .0211668 * rms_pa / MS_REFERENCE_PRESSURE_PA;
     size_t j;
-    if (band >= MS_ECMA_BANDS || rms_pa < 0.0 || !ms_is_finite(rms_pa)) return NAN;
-    if (edition != 2022u && edition != 2025u) return NAN;
+    if (band >= MS_ECMA_BANDS || rms_pa < 0.0 || !ms_is_finite(rms_pa)) return (double)NAN;
+    if (edition != 2022u && edition != 2025u) return (double)NAN;
     for (j = 1u; j < 9u; ++j) {
         double p = MS_REFERENCE_PRESSURE_PA * pow(10.0, (5.0 + 10.0 * (double)j) / 20.0);
         value *= pow(1.0 + pow(rms_pa / p, 1.5), (v[j] - v[j - 1u]) / 1.5);
     }
     if (edition == 2025u) value *= 1.00132;
-    if (!ms_is_finite(value)) return NAN;
+    if (!ms_is_finite(value)) return (double)NAN;
     value -= threshold[band];
     return value > 0.0 ? value : 0.0;
 }
