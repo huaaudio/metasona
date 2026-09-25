@@ -13,7 +13,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "metasona"
-version = "0.2.1"
+version = "0.2.2"
 description = "Source-informed C and Python implementations of psychoacoustic metrics"
 readme = "README.md"
 license = "GPL-3.0-only AND Apache-2.0 AND BSD-3-Clause AND MIT"
@@ -49,12 +49,13 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "numpy==1.26.4; python_version < '3.11'",
-  "numpy==2.2.6; python_version >= '3.11' and python_version < '3.14'",
-  "numpy==2.3.4; python_version >= '3.14'",
-  "scipy==1.13.1; python_version < '3.11'",
-  "scipy==1.15.3; python_version >= '3.11' and python_version < '3.14'",
-  "scipy==1.16.3; python_version >= '3.14'",
+  # Lower bounds reflect tested minimums; consumers may resolve newer releases.
+  "numpy>=1.26.4; python_version < '3.11'",
+  "numpy>=2.2.6; python_version >= '3.11' and python_version < '3.14'",
+  "numpy>=2.3.4; python_version >= '3.14'",
+  "scipy>=1.13.1; python_version < '3.11'",
+  "scipy>=1.15.3; python_version >= '3.11' and python_version < '3.14'",
+  "scipy>=1.16.3; python_version >= '3.14'",
 ]
 
 [project.urls]
