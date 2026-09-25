@@ -304,6 +304,50 @@ class RollingDispatchTests(unittest.TestCase):
         self.assertIs(snapshot.results[RollingMetric.LOUDNESS_ECMA], loudness)
         self.assertIs(snapshot.results[RollingMetric.TONALITY_ECMA], tonality)
 
+    def test_independent_metric_dispatch(self):
+        metrics = (
+            RollingMetric.TIME_VARYING_LOUDNESS,
+            RollingMetric.ROUGHNESS_DANIEL_WEBER,
+            RollingMetric.TONALITY_AURES,
+            RollingMetric.ROUGHNESS_ECMA,
+        )
+        analyzer = RollingAnalyzer(
+            48_000,
+            metrics,
+            window_s=0.32,
+            hop_s=0.32,
+            sound_field="diffuse",
+        )
+        expected = {metric: object() for metric in metrics}
+
+        with (
+            patch(
+                "metasona._rolling.time_varying_loudness",
+                return_value=expected[RollingMetric.TIME_VARYING_LOUDNESS],
+            ) as time_varying,
+            patch(
+                "metasona._rolling.roughness_daniel_weber",
+                return_value=expected[RollingMetric.ROUGHNESS_DANIEL_WEBER],
+            ) as daniel_weber,
+            patch(
+                "metasona._rolling.tonality_aures",
+                return_value=expected[RollingMetric.TONALITY_AURES],
+            ) as aures,
+            patch(
+                "metasona._rolling.roughness_ecma",
+                return_value=expected[RollingMetric.ROUGHNESS_ECMA],
+            ) as ecma_roughness,
+        ):
+            snapshot = analyzer.push(np.zeros(15_360))[0]
+
+        time_varying.assert_called_once()
+        daniel_weber.assert_called_once()
+        aures.assert_called_once()
+        ecma_roughness.assert_called_once()
+        self.assertEqual(tuple(snapshot.results), metrics)
+        for metric, result in expected.items():
+            self.assertIs(snapshot.results[metric], result)
+
     def test_failed_computation_does_not_commit_state(self):
         analyzer = RollingAnalyzer(
             8_000,
