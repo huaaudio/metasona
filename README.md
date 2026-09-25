@@ -70,6 +70,12 @@ the other functions accept mono arrays.
 Python accepts integer sample rates from 8 to 192 kHz and resamples to 48 kHz
 when needed. Results include their units and read-only NumPy arrays.
 
+Applications that receive calibrated mono audio in chunks can use
+`RollingAnalyzer` to compute selected metrics over bounded rolling windows.
+The analyzer is synchronous and device-independent, so callers retain control
+of capture and concurrency. See the [rolling analysis API](docs/python-api.md#rolling-analysis)
+and [complete rolling example](examples/metasona_rolling.py).
+
 For ECMA loudness and tonality together, use
 `result = ms.ecma_tonal_analysis(pressure_pa, fs)` and read `result.loudness`
 and `result.tonality`. Loudness/tonality require at least 304 ms of audio;

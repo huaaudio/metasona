@@ -115,7 +115,7 @@ never flattened implicitly.
 `sample_rate_hz` must be an integer in `[8000, 192000]`; booleans, floats, and
 numeric strings are rejected. Rates whose reduced ratio has a factor above
 4,096 are rejected before filter allocation. Signals not already at 48 kHz are
-converted with SciPy 1.15.3 `scipy.signal.resample_poly`, an explicit Kaiser
+converted with SciPy `scipy.signal.resample_poly`, an explicit Kaiser
 5.0 window, constant-zero padding, and reduced integer factors. For example,
 44.1 kHz uses `up=160`, `down=147`.
 
@@ -123,6 +123,65 @@ converted with SciPy 1.15.3 `scipy.signal.resample_poly`, an explicit Kaiser
 duration, and leave at least one labelled output frame. Frames are retained
 when `time_s >= time_skip_s`; the kernels still process the complete signal, so
 skip does not reset their state.
+
+## Rolling analysis
+
+`RollingAnalyzer` adapts the batch signal metrics to applications that receive
+calibrated mono pressure incrementally. It is a synchronous rolling-window
+wrapper, not an audio-capture API or a stateful native streaming kernel.
+
+```python
+analyzer = RollingAnalyzer(
+  sample_rate_hz=48_000,
+  metrics=[
+    RollingMetric.STATIONARY_LOUDNESS,
+    RollingMetric.TONALITY_AURES,
+  ],
+  window_s=1.0,
+  hop_s=0.2,
+  sound_field=SoundField.FREE,
+)
+
+snapshots = analyzer.push(pressure_chunk_pa)
+```
+
+`metrics` is a nonempty iterable of unique `RollingMetric` values or their
+exact strings:
+
+| Metric | Result type |
+|---|---|
+| `STATIONARY_LOUDNESS` | `LoudnessResult` |
+| `TIME_VARYING_LOUDNESS` | `TimeVaryingLoudnessResult` |
+| `ROUGHNESS_DANIEL_WEBER` | `RoughnessResult` |
+| `TONALITY_AURES` | `TonalityResult` |
+| `SHARPNESS_DIN45692` | `SharpnessResult` |
+| `LOUDNESS_ECMA` | `EcmaLoudnessResult` |
+| `TONALITY_ECMA` | `EcmaTonalityResult` |
+| `ROUGHNESS_ECMA` | `EcmaRoughnessResult` |
+
+The analyzer rounds `window_s` and `hop_s` to input sample counts once. The
+first snapshot ends after one complete window; later snapshots are separated
+by one hop. `push` returns an empty tuple before that point and may return
+multiple `RollingSnapshot` objects when a large chunk crosses several
+boundaries. Snapshot start/end times are absolute on the stream timeline;
+timestamps inside nested metric results remain relative to that window.
+
+Chunks must be finite, nonempty, one-dimensional real arrays at the sample
+rate fixed in the constructor. Input is copied. Completed windows are emitted
+only without padding; there is no partial-window flush. `reset()` discards the
+buffer and restarts timestamps at zero after a stream discontinuity.
+
+Each snapshot contains an immutable `results` mapping. Sharpness reuses a
+stationary-loudness calculation, and selected ECMA loudness and tonality share
+one combined analysis. All due work runs synchronously and no snapshot is
+dropped. Instances are not thread-safe; applications should serialize calls
+and run expensive selections outside a real-time capture callback. As a
+reference on a Ryzen 9 5950X, one-second windows took approximately 10 ms for
+stationary loudness, 41 ms for Aures tonality, 138-158 ms for either roughness
+model, and 615 ms for combined ECMA loudness/tonality. Choose a hop suitable
+for the selected metrics and target hardware.
+
+See the [complete rolling example](../examples/metasona_rolling.py).
 
 ## Exceptions and native loading
 
@@ -136,7 +195,7 @@ skip does not reset their state.
 Platform wheels place the shared library in `metasona/_native`. Developers
 can override discovery with `METASONA_LIBRARY` set to an exact compatible
 library file. The loader verifies both `ms_abi_version() == 1` and an exact
-`ms_version_string() == "0.1.1"` match with this Python package.
+`ms_version_string()` match with the Python package version.
 
 The loader fails closed when a bundled or explicitly selected library cannot
 be loaded. It does not silently substitute a same-named system library. A
