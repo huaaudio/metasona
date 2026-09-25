@@ -7,13 +7,14 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import numpy as np
+import metasona as ms
 
 from metasona import (
     LoudnessResult,
     MetaSonaValidationError,
     SharpnessResult,
 )
-from metasona._rolling import RollingAnalyzer, RollingMetric
+from metasona._rolling import RollingAnalyzer, RollingMetric, RollingResult, RollingSnapshot
 
 
 def _loudness_result(pressure_pa, sample_rate_hz, *, sound_field):
@@ -31,6 +32,21 @@ def _snapshot_signature(snapshots):
         )
         for snapshot in snapshots
     ]
+
+
+class RollingPublicApiTests(unittest.TestCase):
+    def test_rolling_names_are_exported_at_package_top_level(self):
+        expected = {
+            "RollingAnalyzer": RollingAnalyzer,
+            "RollingMetric": RollingMetric,
+            "RollingResult": RollingResult,
+            "RollingSnapshot": RollingSnapshot,
+        }
+
+        for name, value in expected.items():
+            with self.subTest(name=name):
+                self.assertIs(getattr(ms, name), value)
+                self.assertIn(name, ms.__all__)
 
 
 class RollingConfigurationTests(unittest.TestCase):

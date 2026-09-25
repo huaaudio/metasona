@@ -28,6 +28,7 @@ from ._types import (
 )
 from ._ecma import ecma_tonal_analysis, loudness_ecma, roughness_ecma, tonality_ecma
 from ._ecma_types import EcmaLoudnessResult, EcmaRoughnessResult, EcmaTonalAnalysis, EcmaTonalityResult
+from ._rolling import RollingAnalyzer, RollingMetric, RollingResult, RollingSnapshot
 from .exceptions import (
     MetaSonaError,
     MetaSonaValidationError,
@@ -50,6 +51,10 @@ __all__ = [
     "NativeCallError",
     "NativeLibraryError",
     "NativeStatus",
+    "RollingAnalyzer",
+    "RollingMetric",
+    "RollingResult",
+    "RollingSnapshot",
     "RoughnessResult",
     "SharpnessResult",
     "SoundField",

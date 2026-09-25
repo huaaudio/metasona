@@ -6,7 +6,7 @@
 /.cache/
 /reports/
 /tests/*
-!/tests/*.py
+!/tests/test_*.py
 /fuzz/
 /archive/
 /upstream/

@@ -19,6 +19,29 @@ def main() -> None:
     pressure = (1 + np.sin(2 * np.pi * 70 * time)) * np.sin(2 * np.pi * 1000 * time)
     pressure *= 0.02 / np.sqrt(np.mean(pressure**2))
 
+    rolling_metrics = {
+        ms.RollingMetric.STATIONARY_LOUDNESS,
+        ms.RollingMetric.SHARPNESS_DIN45692,
+        ms.RollingMetric.LOUDNESS_ECMA,
+        ms.RollingMetric.TONALITY_ECMA,
+    }
+    rolling = ms.RollingAnalyzer(
+        sample_rate,
+        rolling_metrics,
+        window_s=0.5,
+        hop_s=0.5,
+    )
+    snapshots = []
+    for chunk in (pressure[:12_345], pressure[12_345:30_000], pressure[30_000:]):
+        snapshots.extend(rolling.push(chunk))
+    assert [snapshot.end_time_s for snapshot in snapshots] == [0.5, 1.0]
+    for snapshot in snapshots:
+        assert set(snapshot.results) == rolling_metrics
+        assert np.isfinite(snapshot.results[ms.RollingMetric.STATIONARY_LOUDNESS].loudness_sone)
+        assert np.isfinite(snapshot.results[ms.RollingMetric.SHARPNESS_DIN45692].sharpness_acum)
+        assert np.isfinite(snapshot.results[ms.RollingMetric.LOUDNESS_ECMA].mean_loudness_sone)
+        assert np.isfinite(snapshot.results[ms.RollingMetric.TONALITY_ECMA].mean_tonality_tu)
+
     stationary = ms.stationary_loudness(pressure, sample_rate)
     assert np.isfinite(stationary.loudness_sone) and stationary.loudness_sone > 0
     specific = stationary.specific_loudness_sone_per_bark
