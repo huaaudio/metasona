@@ -23,7 +23,7 @@ from numpy.typing import NDArray
 from .exceptions import NativeLibraryError
 
 EXPECTED_ABI_VERSION = 1
-EXPECTED_NATIVE_VERSION = "0.2.0"
+EXPECTED_NATIVE_VERSION = "0.2.1"
 _ENVIRONMENT_VARIABLE = "METASONA_LIBRARY"
 _SYSTEM_FALLBACK_ENVIRONMENT_VARIABLE = "METASONA_ALLOW_SYSTEM_LIBRARY"
 
@@ -183,7 +183,7 @@ def _library_filenames() -> tuple[str, ...]:
         return ("metasona.dll", "libmetasona.dll")
     if sys.platform == "darwin":
         return ("libmetasona.dylib", "metasona.dylib")
-    return ("libmetasona.so", "libmetasona.so.1", "libmetasona.so.0.2.0")
+    return ("libmetasona.so", "libmetasona.so.1", "libmetasona.so.0.2.1")
 
 
 def _package_candidates() -> list[Any]:

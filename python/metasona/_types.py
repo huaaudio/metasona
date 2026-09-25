@@ -7,12 +7,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum, IntEnum
-from typing import TypeAlias
 
 import numpy as np
 from numpy.typing import NDArray
 
-FloatArray: TypeAlias = NDArray[np.float64]
+FloatArray = NDArray[np.float64]
 
 
 class SoundField(str, Enum):
@@ -44,7 +43,7 @@ def _immutable_float_array(value: FloatArray) -> FloatArray:
     return result
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class LoudnessResult:
     """Stationary loudness and its 0.1-to-24 Bark specific pattern."""
 
@@ -61,7 +60,7 @@ class LoudnessResult:
         object.__setattr__(self, "bark_axis", _immutable_float_array(self.bark_axis))
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class TimeVaryingLoudnessResult:
     """Frame-centred time-varying total and specific loudness."""
 
@@ -81,7 +80,7 @@ class TimeVaryingLoudnessResult:
         object.__setattr__(self, "bark_axis", _immutable_float_array(self.bark_axis))
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class RoughnessResult:
     """Frame-centred Daniel--Weber roughness time series."""
 
@@ -93,7 +92,7 @@ class RoughnessResult:
         object.__setattr__(self, "roughness_asper", _immutable_float_array(self.roughness_asper))
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class TonalityResult:
     """Frame-centred Aures-1985-targeted tonality time series."""
 
@@ -105,7 +104,7 @@ class TonalityResult:
         object.__setattr__(self, "tonality", _immutable_float_array(self.tonality))
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class SharpnessResult:
     """DIN 45692 sharpness in acum."""
 

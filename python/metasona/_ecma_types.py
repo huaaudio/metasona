@@ -18,7 +18,7 @@ def _freeze_arrays(result: Any) -> None:
             object.__setattr__(result, field.name, _immutable_float_array(value))
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class EcmaLoudnessResult:
     """Section 8 loudness in sone_HMS, with the 53-band Bark_HMS pattern.
 
@@ -46,7 +46,7 @@ class EcmaLoudnessResult:
         _freeze_arrays(self)
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class EcmaTonalityResult:
     """Section 6 tonality in tu_HMS, evaluated separately for each ear.
 
@@ -74,7 +74,7 @@ class EcmaTonalityResult:
         _freeze_arrays(self)
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class EcmaRoughnessResult:
     """Section 7 roughness in asper_HMS, without optional entropy weighting.
 
@@ -99,7 +99,7 @@ class EcmaRoughnessResult:
         _freeze_arrays(self)
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class EcmaTonalAnalysis:
     """Loudness and tonality calculated together with one native analysis."""
 

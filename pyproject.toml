@@ -13,12 +13,12 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "metasona"
-version = "0.2.0"
+version = "0.2.1"
 description = "Source-informed C and Python implementations of psychoacoustic metrics"
 readme = "README.md"
 license = "GPL-3.0-only AND Apache-2.0 AND BSD-3-Clause AND MIT"
 license-files = ["LICENSE", "LICENSES/*.txt", "NOTICE", "THIRD_PARTY.md"]
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.9,<3.15"
 authors = [
   { name = "Jiahua Zhang" },
 ]
@@ -39,6 +39,7 @@ classifiers = [
   "Programming Language :: C",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -48,9 +49,11 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "numpy==2.2.6; python_version < '3.14'",
+  "numpy==1.26.4; python_version < '3.11'",
+  "numpy==2.2.6; python_version >= '3.11' and python_version < '3.14'",
   "numpy==2.3.4; python_version >= '3.14'",
-  "scipy==1.15.3; python_version < '3.14'",
+  "scipy==1.13.1; python_version < '3.11'",
+  "scipy==1.15.3; python_version >= '3.11' and python_version < '3.14'",
   "scipy==1.16.3; python_version >= '3.14'",
 ]
 

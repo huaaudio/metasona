@@ -45,7 +45,7 @@ speed alongside FFTs; compiler and framing differences also affect timings.
 
 ## Python
 
-MetaSona requires Python 3.10–3.14. Install the published package from PyPI
+MetaSona requires Python 3.9–3.14. Install the published package from PyPI
 with pip:
 
 ```sh
