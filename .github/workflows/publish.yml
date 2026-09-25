@@ -83,10 +83,10 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
           CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-* cp314-*"
-          # Target glibc Linux; musl-based distributions use the source archive.
+          # Match the current NumPy/SciPy binary baseline; musl uses the sdist.
           CIBW_SKIP: "*-musllinux_*"
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-          CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_MANYLINUX_AARCH64_IMAGE: manylinux_2_28
           CIBW_TEST_COMMAND: 'python "{project}/.github/scripts/smoke_test.py"'
       - uses: actions/upload-artifact@v4
         with:
